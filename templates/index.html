@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>ChatSphere</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" onclick="toggleSidebar()">
+        ☰
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+
+        <div class="logo">
+            ChatSphere
+        </div>
+
+        <!-- PROFILE -->
+        <div class="profile">
+
+            <img
+                src="{{ url_for('static', filename='uploads/' + current_user.profile_pic) }}"
+            >
+
+            <div>
+
+                <h4>{{ username }}</h4>
+
+                <small>Online</small>
+
+            </div>
+
+        </div>
+
+        <!-- UPLOAD -->
+        <form
+            class="upload-form"
+            action="/upload"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            <label class="upload-label">
+
+                📷 Change Profile
+
+                <input
+                    type="file"
+                    name="profile_pic"
+                    hidden
+                >
+
+            </label>
+
+            <button type="submit">
+                Upload
+            </button>
+
+        </form>
+
+        <!-- SEARCH -->
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search chats..."
+                onkeyup="searchChats()"
+            >
+
+        </div>
+
+        <!-- CONTACTS -->
+        <div class="contacts">
+
+            <div
+                class="contact"
+                onclick="joinRoom('General')"
+            >
+                💬 General
+            </div>
+
+            <div
+                class="contact"
+                onclick="joinRoom('Developers')"
+            >
+                👨‍💻 Developers
+            </div>
+
+            <div
+                class="contact"
+                onclick="joinRoom('Friends')"
+            >
+                🎮 Friends
+            </div>
+
+        </div>
+
+        <a href="/logout" class="logout-btn">
+            Logout
+        </a>
+
+    </div>
+
+    <!-- CHAT AREA -->
+    <div class="chat-area">
+
+        <!-- HEADER -->
+        <div class="chat-header">
+
+            <h3 id="room-name">
+                General
+            </h3>
+
+            <small id="typing"></small>
+
+        </div>
+
+        <!-- MESSAGES -->
+        <div id="messages"></div>
+
+        <!-- INPUT -->
+        <div class="input-area">
+
+            <button onclick="addEmoji('😊')">
+                😊
+            </button>
+
+            <button onclick="addEmoji('🔥')">
+                🔥
+            </button>
+
+            <button onclick="addEmoji('❤️')">
+                ❤️
+            </button>
+
+            <input
+                type="text"
+                id="message"
+                placeholder="Type message..."
+                onkeyup="typing()"
+            >
+
+            <button onclick="sendMessage()">
+                Send
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
